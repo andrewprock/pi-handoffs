@@ -1,7 +1,7 @@
 /**
  * handoff.ts — global pi extension: session handoff management.
  *
- * Handoff files live in ~/handoffs/ and are NEVER deleted. Naming:
+ * Handoff files live in ~/.pi/handoffs/ and are NEVER deleted. Naming:
  *   <dirname>-<YYYY-MM-DD>-HANDOFF<n>.md   (dirname = hyphenated repo-root basename)
  * plus legacy layouts found in the wild: <dirname>-HANDOFF<n>.md and
  * repo-root HANDOFF<n>.md.
@@ -33,7 +33,7 @@ type Handoff = {
 
 type HandoffRef = { path: string; n: number; mtime: number };
 
-const HANDOFF_DIR = join(homedir(), "handoffs");
+const HANDOFF_DIR = join(homedir(), ".pi", "handoffs");
 
 // ── discovery ────────────────────────────────────────────────────────────
 
@@ -51,7 +51,7 @@ function hyphenated(s: string): string {
   return s.trim().replace(/\s+/g, "-");
 }
 
-/** All handoff refs visible from this repo (~/handoffs/ + repo root), oldest first. */
+/** All handoff refs visible from this repo (~/.pi/handoffs/ + repo root), oldest first. */
 function collectHandoffs(cwd: string): HandoffRef[] {
   const root = repoRoot(cwd);
 
@@ -67,7 +67,7 @@ function collectHandoffs(cwd: string): HandoffRef[] {
       if (f.endsWith(".md")) consider(join(HANDOFF_DIR, f));
     }
   } catch {
-    /* no ~/handoffs dir */
+    /* no ~/.pi/handoffs dir */
   }
   if (root !== HANDOFF_DIR) {
     try {
@@ -169,17 +169,17 @@ function resumeMessage(h: Handoff): string {
 
 // ── write flow text (used by /handoff write and /handoff now) ────────────
 
-const WRITE_PROMPT = `Publish a session handoff for this repository (see schema/pipeline.md and existing handoffs in ~/handoffs/).
+const WRITE_PROMPT = `Publish a session handoff for this repository (see schema/pipeline.md and existing handoffs in ~/.pi/handoffs/).
 
 The goal: a new session must be able to resume WITHOUT this conversation. Explain how things work NOW, not the path that got here. Major changes get highlighted; mechanics get documented as current behavior.
 
-Handoff files live in ~/handoffs/ (create the directory if needed) and are NEVER deleted. Naming: \`<dirname>-<YYYY-MM-DD>-HANDOFF<n+1>.md\`, where \`<dirname>\` is the hyphenated project directory name used by the existing handoffs (repo-root or working-directory basename - match the latest handoff's filename for consistency). Use today's date. If a file with that exact name already exists, append a \`-2\`, \`-3\`, ... suffix.
+Handoff files live in ~/.pi/handoffs/ (create the directory if needed) and are NEVER deleted. Naming: \`<dirname>-<YYYY-MM-DD>-HANDOFF<n+1>.md\`, where \`<dirname>\` is the hyphenated project directory name used by the existing handoffs (repo-root or working-directory basename - match the latest handoff's filename for consistency). Use today's date. If a file with that exact name already exists, append a \`-2\`, \`-3\`, ... suffix.
 
 Steps:
-1. **Find the latest handoff for this repo**: the most recent \`~/handoffs/*-HANDOFF<n>.md\` by the \`<n>\` in the name (also check the repo root for \`HANDOFF<n>.md\`; fall back to file date if numbering is unclear). Read it COMPLETELY — it defines the format conventions and the standing invariants you must carry forward.
+1. **Find the latest handoff for this repo**: the most recent \`~/.pi/handoffs/*-HANDOFF<n>.md\` by the \`<n>\` in the name (also check the repo root for \`HANDOFF<n>.md\`; fall back to file date if numbering is unclear). Read it COMPLETELY — it defines the format conventions and the standing invariants you must carry forward.
 2. **Reconstruct ground truth** (never trust the old handoff's numbers): run the repo's status tooling, \`git log --oneline -10\`, \`git status --short\`, and read the findings-ledger tail and current report if they exist.
 3. **Clarify with the user if anything is ambiguous** — especially (a) what was decided this session and WHY, (b) which tasks are done vs still open, (c) new standing principles. If the session is straightforward, infer and proceed; state assumptions in the handoff.
-4. **Write \`~/handoffs/<dirname>-<YYYY-MM-DD>-HANDOFF<n+1>.md\`** with these sections, in this order, matching the established format:
+4. **Write \`~/.pi/handoffs/<dirname>-<YYYY-MM-DD>-HANDOFF<n+1>.md\`** with these sections, in this order, matching the established format:
    - Title: \`HANDOFF <n+1> — <what changed; next: <next major work>>\`
    - Supersedes line: the path of the previous handoff (which remains in place, never deleted), canonical spec + findings-ledger range.
    - **Where the pipeline stands NOW**: exact status-tool output; what stages exist and have run; honest explanation of PENDING/DIRTY states; what is committed vs uncommitted.
@@ -204,7 +204,7 @@ const SUBCOMMANDS = [
   { value: "help",    label: "help     — show this help" },
 ] as const;
 
-const HELP_TEXT = `handoff — session handoff management (~/handoffs/, never deleted).
+const HELP_TEXT = `handoff — session handoff management (~/.pi/handoffs/, never deleted).
 
 Usage:
   /handoff                  Interactive subcommand menu
@@ -276,7 +276,7 @@ export default function (pi: ExtensionAPI) {
           const all = refs();
           if (!all.length) {
             ctx.ui.notify(
-              `No handoff documents in ~/handoffs/ or the repo root. Run /handoff write to create one.`,
+              `No handoff documents in ~/.pi/handoffs/ or the repo root. Run /handoff write to create one.`,
               "warning",
             );
             return;
