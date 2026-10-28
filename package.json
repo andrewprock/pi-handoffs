@@ -1,7 +1,7 @@
 {
   "name": "pi-handoffs",
   "version": "1.0.0",
-  "description": "Session handoff management for pi: durable, numbered, never-deleted handoff documents in ~/handoffs/ with write/list/read/restore/now workflows",
+  "description": "Session handoffs for pi: a deliberate alternative to compaction — detailed recent context, a task list that has you ready to go, and a permanent work log. Never-deleted, numbered documents in ~/handoffs/.",
   "license": "MIT",
   "author": "Andrew Prock <prock@cs.wisc.edu>",
   "keywords": ["pi-package", "pi", "extension", "handoff", "session", "continuity"],

@@ -3,6 +3,14 @@
 A [pi](https://pi.dev) extension for **session handoff management**: durable, numbered handoff documents that let any new session resume your work without the old conversation.
 
 Handoff files live in `~/handoffs/` (plus repo roots) and are **never deleted** — they accumulate as a permanent record of how each project evolved. Nothing is loaded automatically at startup; a handoff enters the session only when you explicitly load it.
+## Why handoffs instead of compaction
+
+A handoff is a deliberate alternative to letting compaction summarize your session for you:
+
+- **It takes the place of a compaction** — instead of a lossy machine summary, you get a document written on purpose, with the agent and user deciding what matters.
+- **It keeps recent context in detail** — how things work *now*, exact status, what was decided this session and why — not a compressed approximation.
+- **It lists issues and tasks in priority order**, so the moment a handoff is loaded into a fresh session you are ready to go at the top open task, not re-deriving state.
+- **It serves as a work log** — numbered, dated, never deleted, so the documents accumulate into a permanent record of the project's evolution that any future session can consult.
 
 ## Commands
 
