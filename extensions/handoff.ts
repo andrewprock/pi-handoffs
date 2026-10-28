@@ -2,7 +2,7 @@
  * handoff.ts — global pi extension: session handoff management.
  *
  * Handoff files live in ~/.pi/handoffs/ and are NEVER deleted. Naming:
- *   <dirname>-<YYYY-MM-DD>-HANDOFF<n>.md   (dirname = hyphenated repo-root basename)
+ *   <dirname>-<YYYY-MM-DD>-<HHMMSS>-HANDOFF<n>.md   (dirname = hyphenated repo-root basename)
  * plus legacy layouts found in the wild: <dirname>-HANDOFF<n>.md and
  * repo-root HANDOFF<n>.md.
  *
@@ -173,7 +173,7 @@ const WRITE_PROMPT = `Publish a session handoff for this repository (see schema/
 
 The goal: a new session must be able to resume WITHOUT this conversation. Explain how things work NOW, not the path that got here. Major changes get highlighted; mechanics get documented as current behavior.
 
-Handoff files live in ~/.pi/handoffs/ (create the directory if needed) and are NEVER deleted. Naming: \`<dirname>-<YYYY-MM-DD>-HANDOFF<n+1>.md\`, where \`<dirname>\` is the hyphenated project directory name used by the existing handoffs (repo-root or working-directory basename - match the latest handoff's filename for consistency). Use today's date. If a file with that exact name already exists, append a \`-2\`, \`-3\`, ... suffix.
+Handoff files live in ~/.pi/handoffs/ (create the directory if needed) and are NEVER deleted. Naming: \`<dirname>-<YYYY-MM-DD>-<HHMMSS>-HANDOFF<n+1>.md\`, where \`<dirname>\` is the hyphenated project directory name used by the existing handoffs (repo-root or working-directory basename - match the latest handoff's filename for consistency). Use today's date and the current local time in 24-hour HHMMSS form (e.g. 194213) so multiple handoffs on the same day are distinct and chronologically ordered. If a file with that exact name already exists, append a \`-2\`, \`-3\`, ... suffix.
 
 Steps:
 1. **Find the latest handoff for this repo**: the most recent \`~/.pi/handoffs/*-HANDOFF<n>.md\` by the \`<n>\` in the name (also check the repo root for \`HANDOFF<n>.md\`; fall back to file date if numbering is unclear). Read it COMPLETELY — it defines the format conventions and the standing invariants you must carry forward.

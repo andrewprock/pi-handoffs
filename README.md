@@ -28,7 +28,7 @@ A handoff is a deliberate alternative to letting compaction summarize your sessi
 
 ## How it works
 
-- **`/handoff write`** sends the agent a structured publishing workflow: reconstruct ground truth (git status, latest handoff, findings), clarify open questions, then write `<dirname>-<YYYY-MM-DD>-HANDOFF<n+1>.md` with sections for current pipeline state, how things work now, the active program, a prioritized task list, deferred queue, and standing invariants.
+- **`/handoff write`** sends the agent a structured publishing workflow: reconstruct ground truth (git status, latest handoff, findings), clarify open questions, then write `<dirname>-<YYYY-MM-DD>-<HHMMSS>-HANDOFF<n+1>.md` (time in 24-hour HHMMSS, so same-day handoffs stay distinct and ordered) with sections for current pipeline state, how things work now, the active program, a prioritized task list, deferred queue, and standing invariants.
 - **`/handoff restore` / `read`** inject a resume message: the handoff's task list headlines plus the suggested next-session opening, so the new session picks up at the top open task instead of re-deriving state.
 - **`/handoff now`** chains it all: wait for idle → write → verify a new document appeared → start a new session → load it. One command from "we're done here" to a primed fresh session.
 - **Project scoping**: handoffs match by hyphenated directory name prefix, so `/handoff restore` and `list` know which documents belong to the repo you're in (`*` marks the current project, `→` marks the loaded one).
